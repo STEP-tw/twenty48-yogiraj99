@@ -1,22 +1,52 @@
 (ns twenty48.core
   (:gen-class))
 
-(defn move-grid-right
+(def remove-zeros (partial remove zero?))
+
+(def partition-by-identity (partial partition-by identity))
+
+(def partition-by-2
+  (comp
+   (partial mapcat (partial partition-all 2))
+   (partial partition-by-identity)))
+
+(def sum-up
+  (partial map (partial apply +)))
+
+(def transpose
+  (partial apply mapv vector))
+
+(def move-grid
+  (comp
+   (partial take-last 4)
+   (partial concat (repeat 4 0))
+   (partial sum-up)
+   (partial partition-by-2)
+   (partial remove-zeros)))
+
+(def move-grid-right
   "Moves an entire grid to the right"
-  [grid]
-  grid)
+  (partial map move-grid))
 
-(defn move-grid-left
+(def move-grid-left
   "Moves an entire grid to the left"
-  [grid]
-  grid)
+  (comp
+   (partial map reverse)
+   (partial move-grid-right)
+   (partial map reverse)))
 
-(defn move-grid-down
+(def move-grid-down
   "Moves an entire grid down"
-  [grid]
-  grid)
+  (comp
+   (partial transpose)
+   (partial move-grid-right)
+   (partial transpose)))
 
-(defn move-grid-up
+(def move-grid-up
   "Moves an entire grid up"
-  [grid]
-  grid)
+  (comp
+   (partial transpose)
+   (partial map reverse)
+   (partial move-grid-right)
+   (partial map reverse)
+   (partial transpose)))
