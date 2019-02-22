@@ -20,8 +20,10 @@
   (comp
    (partial take-last 4)
    (partial concat (repeat 4 0))
+   (partial reverse)
    (partial sum-up)
    (partial partition-by-2)
+   (partial reverse)
    (partial remove-zeros)))
 
 (def move-grid-right
